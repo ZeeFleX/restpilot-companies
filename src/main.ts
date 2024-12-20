@@ -1,19 +1,33 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { NestFactory } from "@nestjs/core";
+import { AppModule } from "./app.module";
+import { ConfigService } from "@nestjs/config";
+import { MicroserviceOptions, Transport } from "@nestjs/microservices";
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
+  const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService);
+
+  // Configure RabbitMQ microservice
+  app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
     options: {
-      urls: [process.env.RABBITMQ_URL || 'amqp://localhost:5672'],
-      queue: 'companies-service',
+      urls: [configService.get<string>("RABBITMQ_URI")],
+      queue: "companies-service",
       queueOptions: {
-        durable: false,
+        durable: true,
       },
     },
   });
 
-  await app.listen();
+  // Start all microservices and then start HTTP
+  await app.startAllMicroservices();
+  await app.listen(configService.get<number>("PORT", 3003));
+
+  console.log(
+    `Menu microservice is running on port ${configService.get<number>("PORT", 3003)}`
+  );
+  console.log(
+    `RabbitMQ connected to ${configService.get<string>("RABBITMQ_URI")}`
+  );
 }
 bootstrap();
