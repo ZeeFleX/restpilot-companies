@@ -1,13 +1,15 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../database/prisma.service";
 import { Company } from "@prisma/client";
-import { ICreateCompanyRequestDTO } from "src/types/shared/dto/companies/requests.dto";
+import { CompaniesDTO } from "src/types/shared/dto/companies";
 
 @Injectable()
 export class CompaniesService {
   constructor(private prisma: PrismaService) {}
 
-  async createCompany(data: ICreateCompanyRequestDTO): Promise<Company> {
+  async createCompany(
+    data: CompaniesDTO.Request.CreateCompany
+  ): Promise<Company> {
     return this.prisma.company.create({
       data,
     });
