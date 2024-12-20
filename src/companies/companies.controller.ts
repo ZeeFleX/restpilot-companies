@@ -8,7 +8,7 @@ import { ICreateCompanyRequestDTO } from "src/types/shared/dto/companies/request
 export class CompaniesController {
   constructor(private readonly companiesService: CompaniesService) {}
 
-  @MessagePattern("companies.create")
+  @MessagePattern("company.create")
   async createCompany(payload: ICreateCompanyRequestDTO): Promise<Company> {
     return this.companiesService.createCompany(payload);
   }
