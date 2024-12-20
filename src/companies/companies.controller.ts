@@ -8,7 +8,7 @@ import { CompaniesDTO } from "src/types/shared";
 export class CompaniesController {
   constructor(private readonly companiesService: CompaniesService) {}
 
-  @MessagePattern("company.create")
+  @MessagePattern("companies.company.create")
   async createCompany(
     payload: CompaniesDTO.Request.CreateCompany
   ): Promise<Company> {
