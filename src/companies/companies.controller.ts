@@ -11,7 +11,7 @@ export class CompaniesController {
   @MessagePattern("companies.company.create")
   async createCompany(
     payload: CompaniesDTO.Request.CreateCompany
-  ): Promise<Company> {
+  ): Promise<CompaniesDTO.Response.CreateCompany> {
     return this.companiesService.createCompany(payload);
   }
 }
