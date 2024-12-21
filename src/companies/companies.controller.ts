@@ -1,8 +1,7 @@
 import { Controller } from "@nestjs/common";
 import { MessagePattern } from "@nestjs/microservices";
 import { CompaniesService } from "./companies.service";
-import { Company } from "@prisma/client";
-import { CompaniesDTO } from "src/types/shared";
+import { CompaniesDTO } from "shared-types";
 
 @Controller()
 export class CompaniesController {

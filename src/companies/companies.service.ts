@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../database/prisma.service";
-import { CompaniesDTO } from "src/types/shared/dto/companies";
+import { CompaniesDTO } from "shared-types";
 import { RpcException } from "@nestjs/microservices";
 
 @Injectable()
