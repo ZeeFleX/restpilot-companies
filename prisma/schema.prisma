@@ -9,17 +9,28 @@ datasource db {
 
 model Company {
   id          String       @id @default(uuid())
-  name        String
-  address     String?
+  companyName String
+  address     String
+  inn         String       @unique
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   restaurants Restaurant[]
+  employees   Employee[]
 }
 
 model Restaurant {
   id        String   @id @default(uuid())
   name      String
   address   String
+  company   Company  @relation(fields: [companyId], references: [id])
+  companyId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Employee {
+  id        String   @id @default(uuid())
+  userId    String
   company   Company  @relation(fields: [companyId], references: [id])
   companyId String
   createdAt DateTime @default(now())

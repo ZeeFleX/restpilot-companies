@@ -13,9 +13,26 @@ export class CompaniesService {
     data: CompaniesDTO.Request.CreateCompany
   ): Promise<CompaniesDTO.Response.CreateCompany> {
     try {
-      const createdCompany = await this.prisma.company.create({
-        data,
-      });
+      const { companyName, address, inn, ownerUserId } = data;
+      const createdCompany = await this.prisma.company
+        .create({
+          data: {
+            companyName,
+            address,
+            inn,
+            employees: {
+              create: {
+                userId: ownerUserId,
+              },
+            },
+          },
+        })
+        .catch(() => {
+          throw new RpcException({
+            code: 2001,
+            message: "COMPANY_NOT_CREATED",
+          });
+        });
 
       if (!createdCompany) {
         throw new RpcException({
